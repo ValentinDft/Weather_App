@@ -1,17 +1,40 @@
-import React from 'react'
+import React, {useRef, useState} from 'react'
 import styled from 'styled-components'
 
+import { ToastContainer, toast, Slide } from 'react-toastify';
+
 export default function Form() {
+
+    const inputCity = useRef();
+    const [send, setSend] = useState(false);
+
+    // Au clique btn form
+    let submitForm = e => {
+        e.preventDefault()
+        console.log(inputCity.current.value);
+        inputCity.current.value.length > 2 ? setSend(true) : toast.error('Please enter more than 2 caracts 👇', {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            transition: Slide,
+            closeButton: false,
+            });
+    }
+
     return (
-        <FormCity>
+        <FormCity onSubmit={submitForm}>
 
             <h2 style={{textAlign: "center", margin: "0px 10px 50px 10px"}}>Look for the weather in your town !</h2>
             <FormGroupField>
-                <InputCity type="text" name="city" placeholder="Enter your city..."/>
+                <InputCity type="text" name="city" placeholder="Enter your city..." ref={inputCity}/>
                 <FormLabel for="city">Your city 👇</FormLabel>
             </FormGroupField>
             <ButtonForm>GO 🚀</ButtonForm>
 
+            <ToastContainer />
         </FormCity>
     )
 }

@@ -1,18 +1,20 @@
-import React, {useRef, useState} from 'react'
+import React, {useRef} from 'react'
 import styled from 'styled-components'
 
 import { ToastContainer, toast, Slide } from 'react-toastify';
+import {useNavigate} from "react-router-dom";
 
 export default function Form() {
 
     const inputCity = useRef();
-    const [send, setSend] = useState(false);
+    const navigation = useNavigate();
+    
 
     // Au clique btn form
     let submitForm = e => {
         e.preventDefault()
-        console.log(inputCity.current.value);
-        inputCity.current.value.length > 2 ? setSend(true) : toast.error('Please enter more than 2 caracts 👇', {
+
+        inputCity.current.value.length > 2 ? navigation(`/city/${inputCity.current.value}`) : toast.error('Please enter more than 2 caracts 👇', {
             position: "top-center",
             autoClose: 5000,
             hideProgressBar: false,
@@ -22,6 +24,8 @@ export default function Form() {
             transition: Slide,
             closeButton: false,
             });
+
+        
     }
 
     return (

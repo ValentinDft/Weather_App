@@ -34,7 +34,7 @@ export default function Form() {
             <h2 style={{textAlign: "center", margin: "0px 10px 50px 10px"}}>Look for the weather in your town !</h2>
             <FormGroupField>
                 <InputCity type="text" name="city" placeholder="Enter your city..." ref={inputCity}/>
-                <FormLabel for="city">Your city 👇</FormLabel>
+                <FormLabel htmlFor="city">Your city 👇</FormLabel>
             </FormGroupField>
             <ButtonForm>GO 🚀</ButtonForm>
 

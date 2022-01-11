@@ -1,20 +1,44 @@
-import React, {useRef} from 'react'
+import React, {useRef, useEffect} from 'react'
 import styled from 'styled-components'
 
 import { ToastContainer, toast, Slide } from 'react-toastify';
 import {useNavigate} from "react-router-dom";
 
+// Requete
+import { useQuery } from 'react-query'
+import { getWeather } from '../Services/api';
+
 export default function Form() {
 
     const inputCity = useRef();
     const navigation = useNavigate();
+    const {isSuccess, data, isError, refetch} = useQuery('weather', () => getWeather(inputCity.current.value), { enabled: false })
+    
+    useEffect(() => {
+        if (isSuccess && data.cod === "404") {
+            toast.error("Désolé nous n'avons aucune donnée sur cette ville 😔", {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                transition: Slide,
+                closeButton: false
+                });
+        } else if(isSuccess && data.cod === 200) {
+            navigation(`/city/${data.name}`, { state: data });
+        } else if(isError) {
+            console.log("Erreur chargement");
+        } 
+    }, [data])
     
 
     // Au clique btn form
     let submitForm = e => {
         e.preventDefault()
 
-        inputCity.current.value.length > 2 ? navigation(`/city/${inputCity.current.value}`) : toast.error('Please enter more than 2 caracts 👇', {
+        inputCity.current.value.length > 2 ? refetch() : toast.error('Please enter more than 2 caracts 👇', {
             position: "top-center",
             autoClose: 5000,
             hideProgressBar: false,
@@ -24,13 +48,11 @@ export default function Form() {
             transition: Slide,
             closeButton: false,
             });
-
-        
     }
 
     return (
         <FormCity onSubmit={submitForm}>
-
+            
             <h2 style={{textAlign: "center", margin: "0px 10px 50px 10px"}}>Look for the weather in your town !</h2>
             <FormGroupField>
                 <InputCity type="text" name="city" placeholder="Enter your city..." ref={inputCity}/>
@@ -39,7 +61,9 @@ export default function Form() {
             <ButtonForm>GO 🚀</ButtonForm>
 
             <ToastContainer />
+            
         </FormCity>
+        
     )
 }
 

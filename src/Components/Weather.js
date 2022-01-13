@@ -1,20 +1,22 @@
 import React, {useState, useEffect} from 'react'
 import styled from 'styled-components'
+import {useLocation} from "react-router-dom";
 
 // Images
-import Nuage from "../Images/nuage.png"
-import Soleil from "../Images/soleil.png"
-import Pluie from "../Images/pluie.png"
 import Nuit from "../Images/nuit.jpg"
 import Jour from "../Images/jour.jpg"
 
 export default function Weather() {
 
+    const { state } = useLocation();
+    
     const [dayOrNight, setDayOrNitght] = useState(null)
-    const date = new Date((1641478177*1000)+(10800*1000))
-    const time = date.getUTCMinutes()
+    // const [dataWeather, setDataWeather] = useState({})
+    const date = new Date((state.dt*1000)+(state.timezone*1000))
+    const time = date.getUTCHours();
     
     useEffect(() => {
+        // setDataWeather({...state})
         if (time >= 7 && time <= 18) {
             setDayOrNitght(true)
         } else {
@@ -22,20 +24,21 @@ export default function Weather() {
         }
     }, [])
 
+    let weatherIcon = `http://openweathermap.org/img/w/${state.weather[0].icon}.png`
+    
     return (
         <ContainerWeather>
             <CardCity time={dayOrNight}>
                 <ContainerTemp time={dayOrNight}>
-                    <p>22°C / 25°C</p>
-                    {/* Mettre icons openweathermap */}
-                    <img src={Nuage} style={{width: "40px", height: "35px"}}/>
+                    <p>{state.main.temp_min}°C / {state.main.temp_max}°C</p>
+                    <img src={weatherIcon} style={{width: "40px", height: "35px"}}/>
                     {dayOrNight ? <p>Day</p> : <p>Night</p>}
                 </ContainerTemp>
                 
 
                 <Background time={dayOrNight}></Background>
                 
-                <p>Los Angeles</p>
+                <p>{state.name}</p>
             </CardCity>
             
         </ContainerWeather>

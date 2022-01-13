@@ -50,8 +50,16 @@ export default function Form() {
             });
     }
 
+    // Press enter
+    const checkKeyDown = (e) => {
+        if (e.code === 'Enter') {
+            e.preventDefault();
+            submitForm(e);
+        }
+    };
+
     return (
-        <FormCity onSubmit={submitForm}>
+        <FormCity onSubmit={submitForm} onKeyDown={(e) => checkKeyDown(e)}>
             
             <h2 style={{textAlign: "center", margin: "0px 10px 50px 10px"}}>Look for the weather in your town !</h2>
             <FormGroupField>

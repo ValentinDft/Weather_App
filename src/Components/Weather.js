@@ -38,7 +38,7 @@ export default function Weather() {
     
     return (
         <>
-            <IconBack onClick={() => navigate(-1)}/>
+            {/* <IconBack onClick={() => navigate(-1)}/> */}
         
             <ContainerWeather>
                 <CardCity time={dayOrNight}>

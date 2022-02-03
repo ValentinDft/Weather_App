@@ -1,5 +1,6 @@
 import React, {useRef, useEffect} from 'react'
 import styled from 'styled-components'
+import { gsap } from "gsap";
 
 import { ToastContainer, toast, Slide } from 'react-toastify';
 import {useNavigate} from "react-router-dom";
@@ -11,10 +12,29 @@ import { getWeather } from '../Services/api';
 export default function Form() {
 
     const inputCity = useRef();
+    const elementAnime= useRef();
     const navigation = useNavigate();
     const {isSuccess, data, isError, refetch} = useQuery('weather', () => getWeather(inputCity.current.value), { enabled: false })
+
+    const animationSlide = elem => {
+        gsap.fromTo(
+            elem,
+            {
+                opacity: 0,
+                y: -100,
+            },
+            {
+                opacity: 1,
+                y: 0,
+                duration: 1.5,
+            }
+        )
+    }
     
     useEffect(() => {
+
+        animationSlide(elementAnime.current)
+
         if (isSuccess && data.cod === "404") {
             toast.error(`Sorry we can't find ${inputCity.current.value} 😔`, {
                 position: "top-center",
@@ -31,6 +51,7 @@ export default function Form() {
         } else if(isError) {
             console.log("Erreur chargement");
         } 
+
     }, [data])
     
 
@@ -59,7 +80,7 @@ export default function Form() {
     };
 
     return (
-        <FormCity onSubmit={submitForm} onKeyDown={(e) => checkKeyDown(e)}>
+        <FormCity onSubmit={submitForm} onKeyDown={(e) => checkKeyDown(e)} ref={elementAnime}>
             
             <h2 style={{textAlign: "center", margin: "0px 10px 50px 10px"}}>Look for the weather in your town !</h2>
             <FormGroupField>

@@ -1,5 +1,6 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 import styled from 'styled-components'
+import { gsap } from "gsap";
 
 // React router
 import { useLocation } from 'react-router-dom';
@@ -20,12 +21,31 @@ export default function Weather() {
     const { state } = useLocation();
     const navigate = useNavigate();
     
+    const elementAnime= useRef();
     const [dayOrNight, setDayOrNitght] = useState(null)
     // const [dataWeather, setDataWeather] = useState({})
     const date = new Date((state.dt*1000)+(state.timezone*1000))
     const time = date.getUTCHours();
+
+    const animationSlide = elem => {
+        gsap.fromTo(
+            elem,
+            {
+                opacity: 0,
+                x: -200,
+            },
+            {
+                opacity: 1,
+                x: 0,
+                duration: 1.5,
+            }
+        )
+    }
     
     useEffect(() => {
+
+        animationSlide(elementAnime.current)
+
         // setDataWeather({...state})
         if (time >= 7 && time <= 18) {
             setDayOrNitght(true)
@@ -41,7 +61,7 @@ export default function Weather() {
             {/* <IconBack onClick={() => navigate(-1)}/> */}
         
             <ContainerWeather>
-                <CardCity time={dayOrNight}>
+                <CardCity time={dayOrNight} ref={elementAnime}>
                     <ContainerTemp time={dayOrNight}>
                         <p>{state.main.temp_min}°C / {state.main.temp_max}°C</p>
                         <img src={weatherIcon} style={{width: "40px", height: "35px"}}/>

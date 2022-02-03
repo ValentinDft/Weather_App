@@ -7,10 +7,10 @@ import Weather from './Components/Weather';
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<Home/>} />
-      <Route path="/city/:id" element={<Weather/>} />
+      <Route path="/Weather_App" element={<Home/>} />
+      <Route path="/Weather_App/city/:id" element={<Weather/>} />
       {/* Ajouter un composant erreur 404 */}
-      <Route path="/city/*" element={<Weather/>} />
+      <Route path="/Weather_App/city/*" element={<Weather/>} />
     </Routes>
   );
 }

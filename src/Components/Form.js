@@ -16,7 +16,7 @@ export default function Form() {
     
     useEffect(() => {
         if (isSuccess && data.cod === "404") {
-            toast.error("Désolé nous n'avons aucune donnée sur cette ville 😔", {
+            toast.error(`Sorry we can't find ${inputCity.current.value} 😔`, {
                 position: "top-center",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -27,7 +27,7 @@ export default function Form() {
                 closeButton: false
                 });
         } else if(isSuccess && data.cod === 200) {
-            navigation(`/city/${data.name}`, { state: data });
+            navigation(`/Weather_App/city/${data.name}`, { state: data });
         } else if(isError) {
             console.log("Erreur chargement");
         } 

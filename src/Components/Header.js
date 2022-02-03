@@ -6,7 +6,7 @@ export default function Header() {
     return (
         <>
             <HeaderTitle>
-                <h1><LinkTitle to="/">Weather App</LinkTitle></h1>
+                <h1><LinkTitle to="/Weather_App">Weather App</LinkTitle></h1>
             </HeaderTitle>
             <div>
                 <svg viewBox="0 0 1440 34" fill="none" xmlns="http://www.w3.org/2000/svg">
